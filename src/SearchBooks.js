@@ -1,8 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class SearchBooks extends React.Component {
+  state = {
+    books: []
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll().then((books) => {
+      console.log(books)
+      this.setState({ books })
+    })
+  }
+
   render() {
     return (
       <div className="search-books">
