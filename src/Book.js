@@ -1,16 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Book extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  // handleChange(event) {
-  //   this.setState({value: event.target.value});
-  // }
-
-  handleChange(event) {
+  handleChange = (event) => {
     this.props.changeBookshelf(this.props.book, event.target.value)
   }
 
@@ -33,10 +25,15 @@ class Book extends React.Component {
           </div>
         </div>
         <div className="book-title">{this.props.book.title}</div>
-        <div className="book-authors">{this.props.book.authors.join(',')}</div>
+        <div className="book-authors">{this.props.book.authors && this.props.book.authors.join(', ')}</div>
       </div>
     )
   }
+}
+
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  changeBookshelf: PropTypes.func.isRequired
 }
 
 export default Book

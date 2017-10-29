@@ -1,20 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
-import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 import './App.css'
 
 class SearchBooks extends React.Component {
-  state = {
-    books: []
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({ books })
-    })
-  }
-
   render() {
     return (
       <div className="search-books">
@@ -29,16 +19,22 @@ class SearchBooks extends React.Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={this.props.query}
+              onChange={(event) => this.props.updateQuery(event.target.value)}
+            />
 
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.books.map((book) => (
+            {(this.props.searchedBooks && this.props.searchedBooks.length > 0) && this.props.searchedBooks.map((book) => (
               <li key={book.id}>
                 <Book
                   book={book}
+                  changeBookshelf={this.props.changeBookshelf}
                 />
               </li>
             ))}
@@ -47,6 +43,14 @@ class SearchBooks extends React.Component {
       </div>
     )
   }
+}
+
+SearchBooks.propTypes = {
+  shelfBooks: PropTypes.array.isRequired,
+  searchedBooks: PropTypes.array.isRequired,
+  query: PropTypes.string.isRequired,
+  updateQuery: PropTypes.func.isRequired,
+  changeBookshelf: PropTypes.func.isRequired
 }
 
 export default SearchBooks
