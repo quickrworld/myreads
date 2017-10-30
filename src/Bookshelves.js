@@ -5,6 +5,13 @@ import PropTypes from 'prop-types'
 import './App.css'
 
 class Bookshelves extends React.Component {
+  
+  static propTypes = {
+    shelfBooks: PropTypes.array.isRequired,
+    searchedBooks: PropTypes.array.isRequired,
+    changeBookshelf: PropTypes.func.isRequired
+  }
+
   render() {
     return (
       <div className="list-books">
@@ -38,12 +45,6 @@ class Bookshelves extends React.Component {
       </div>
     )
   }
-}
-
-Bookshelves.propTypes = {
-  shelfBooks: PropTypes.array.isRequired,
-  searchedBooks: PropTypes.array.isRequired,
-  changeBookshelf: PropTypes.func.isRequired,
 }
 
 export default Bookshelves

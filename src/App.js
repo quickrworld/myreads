@@ -6,6 +6,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class BooksApp extends React.Component {
+
   state = {
     shelfBooks: [],
     searchedBooks: [],
@@ -19,55 +20,83 @@ class BooksApp extends React.Component {
   }
 
   changeBookshelf = (book, shelf) => {
-    BooksAPI.update(book, shelf)
-    this.setState((state) => ({
-      shelfBooks: this.state.shelfBooks.map((shelfBook) => {
-        if (shelfBook.id === book.id) { shelfBook.shelf = shelf }
-        return shelfBook
-      })
-    }))
+    BooksAPI.update(book, shelf).then((result) => {
+      if (result[shelf].includes(book.id)) {
+        this.setState((state) => ({
+          shelfBooks: this.state.shelfBooks.map((shelfBook) => {
+            if (shelfBook.id === book.id) { shelfBook.shelf = shelf }
+            return shelfBook
+          })
+        }))
+      }
+    })
   }
 
+  searching = false
+  nextQuery = false
+
   updateQuery = (query) => {
-    console.log("updateQuery")
-    this.setState( {query: query.trim()} )
-    if (query) {
-      BooksAPI.search(query, 100).then((searchedBooks) => {
+
+    this.setState({query})
+
+    if (this.searching) {
+      this.nextQuery = true
+      return
+    }
+
+    this.searching = true
+    this.nextQuery = false
+
+    if (query.trim().length === 0) {
+      this.setState({searchedBooks: [], query: ''})
+      this.searching = false
+      return
+    }
+
+    BooksAPI.search(query.trim(), 100).then((searchedBooks) => {
+      this.searching = false
+      if (searchedBooks) {
         if (searchedBooks.error) {
-          console.log(searchedBooks)
           this.setState({searchedBooks: []})
-          return
-        } else if (searchedBooks) {
+        } else {
           searchedBooks.forEach((searchedBook) => {
-            let found = this.state.shelfBooks.find((shelfBook, index, array) => { return shelfBook.id === searchedBook.id })
+            const found = this.state.shelfBooks.find((shelfBook, index, array) => shelfBook.id === searchedBook.id)
             if (found) {
               searchedBook.shelf = found.shelf
             } else {
               searchedBook.shelf = "none"
-              console.log("shelf set to none")
             }
           })
-          this.setState({searchedBooks})  
-        }   
-      })
-    } else {
-      this.setState({searchedBooks: []})
-    }
+          this.setState({searchedBooks})
+        }
+        if (this.nextQuery) {
+          this.updateQuery(this.state.query)
+        }
+      }
+    }).catch((error) => {
+      this.searching = false
+    })
   }
 
   placeSearchedBookOnShelf = (book, shelf) => {
-    console.log("placeSearchedBookOnShelf")
-    let bookOnShelf = this.state.shelfBooks.find((element,index,array) => { return element.id === book.id })
-
+    const bookOnShelf = this.state.shelfBooks.find((element,index,array) => { return element.id === book.id })
     if (bookOnShelf) {
-      this.changeBookshelf(book,shelf)
+      this.changeBookshelf(book, shelf)
     } else {
-      BooksAPI.update(book, shelf)
-      book.shelf = shelf
-      let newShelfBooks = this.state.shelfBooks.map(e => e)
-      newShelfBooks.push(book)
-      this.setState( { shelfBooks: newShelfBooks } )
+      BooksAPI.update(book, shelf).then((result) => {
+        book.shelf = shelf
+        const newShelfBooks = this.copyArray(this.state.shelfBooks)
+        newShelfBooks.push(book)
+        this.setState( { shelfBooks: newShelfBooks } )
+      })
     }
+  }
+
+  copyArray(a) {
+    var i = a.length
+    const b = []
+    while (i--) { b[i] = a[i] }
+    return b
   }
 
   render() {

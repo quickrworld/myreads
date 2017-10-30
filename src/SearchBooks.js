@@ -5,6 +5,15 @@ import PropTypes from 'prop-types'
 import './App.css'
 
 class SearchBooks extends React.Component {
+
+  static propTypes = {
+    shelfBooks: PropTypes.array.isRequired,
+    searchedBooks: PropTypes.array.isRequired,
+    query: PropTypes.string.isRequired,
+    updateQuery: PropTypes.func.isRequired,
+    changeBookshelf: PropTypes.func.isRequired
+  }
+
   render() {
     return (
       <div className="search-books">
@@ -25,7 +34,6 @@ class SearchBooks extends React.Component {
               value={this.props.query}
               onChange={(event) => this.props.updateQuery(event.target.value)}
             />
-
           </div>
         </div>
         <div className="search-books-results">
@@ -43,14 +51,6 @@ class SearchBooks extends React.Component {
       </div>
     )
   }
-}
-
-SearchBooks.propTypes = {
-  shelfBooks: PropTypes.array.isRequired,
-  searchedBooks: PropTypes.array.isRequired,
-  query: PropTypes.string.isRequired,
-  updateQuery: PropTypes.func.isRequired,
-  changeBookshelf: PropTypes.func.isRequired
 }
 
 export default SearchBooks
