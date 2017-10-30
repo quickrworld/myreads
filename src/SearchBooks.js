@@ -14,6 +14,10 @@ class SearchBooks extends React.Component {
     changeBookshelf: PropTypes.func.isRequired
   }
 
+  componentDidMount() {
+    this.props.updateQuery(this.props.query)
+  }
+
   render() {
     return (
       <div className="search-books">
