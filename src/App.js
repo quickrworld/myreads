@@ -28,8 +28,35 @@ class BooksApp extends React.Component {
             return shelfBook
           })
         }))
+      } else {
+        // server update failed: provide feedback to user
       }
     })
+  }
+
+  placeSearchedBookOnShelf = (book, shelf) => {
+    const bookOnShelf = this.state.shelfBooks.find((element,index,array) => element.id === book.id)
+    if (bookOnShelf) {
+      this.changeBookshelf(book, shelf)
+    } else {
+      BooksAPI.update(book, shelf).then((result) => {
+        if (result[shelf].includes(book.id)) {
+          book.shelf = shelf
+          const newShelfBooks = this.copyArray(this.state.shelfBooks)
+          newShelfBooks.push(book)
+          this.setState( { shelfBooks: newShelfBooks } )          
+        } else {
+          // server update failed: provide feedback to user
+        }
+      })
+    }
+  }
+
+  copyArray(a) {
+    var i = a.length
+    const b = []
+    while (i--) { b[i] = a[i] }
+    return b
   }
 
   searching = false
@@ -76,27 +103,6 @@ class BooksApp extends React.Component {
     }).catch((error) => {
       this.searching = false
     })
-  }
-
-  placeSearchedBookOnShelf = (book, shelf) => {
-    const bookOnShelf = this.state.shelfBooks.find((element,index,array) => { return element.id === book.id })
-    if (bookOnShelf) {
-      this.changeBookshelf(book, shelf)
-    } else {
-      BooksAPI.update(book, shelf).then((result) => {
-        book.shelf = shelf
-        const newShelfBooks = this.copyArray(this.state.shelfBooks)
-        newShelfBooks.push(book)
-        this.setState( { shelfBooks: newShelfBooks } )
-      })
-    }
-  }
-
-  copyArray(a) {
-    var i = a.length
-    const b = []
-    while (i--) { b[i] = a[i] }
-    return b
   }
 
   render() {
