@@ -22,13 +22,12 @@ class BooksApp extends React.Component {
   changeBookshelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((result) => {
       if (shelf === "none") {
-        let i = this.state.shelfBooks.length
         const newShelfBooks = []
-        while (i--) {
-          if (this.state.shelfBooks[i].id !== book.id) {
-            newShelfBooks.push(this.state.shelfBooks[i])
+        this.state.shelfBooks.forEach((element) => {
+          if (element.id !== book.id) {
+            newShelfBooks.push(element)
           }
-        }
+        })
         this.setState({shelfBooks: newShelfBooks})
       } else if (result[shelf].includes(book.id)) {
         this.setState((state) => ({
