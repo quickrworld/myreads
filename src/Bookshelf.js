@@ -3,33 +3,33 @@ import './App.css'
 import Book from './Book'
 import PropTypes from 'prop-types'
 
-class Bookshelf extends React.Component {
-  
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    books: PropTypes.array.isRequired,
-    changeBookshelf: PropTypes.func.isRequired
-  }
 
-  render() {
-    return (
-      <div className="bookshelf">
-        <h2 className="bookshelf-title">{this.props.title}</h2>
-        <div className="bookshelf-books">
-          <ol className="books-grid">
-            {this.props.books.map((book) => (
-              <li key={`${book.title} + ":" + ${book.authors}`}>
-                <Book
-                  book={book}
-                  changeBookshelf={this.props.changeBookshelf}
-                />
-              </li>
-            ))}
-          </ol>
-        </div>
+Bookshelf.propTypes = {
+  title: PropTypes.string.isRequired,
+  books: PropTypes.array.isRequired,
+  changeBookshelf: PropTypes.func.isRequired,
+  selectBook: PropTypes.func.isRequired
+}
+
+function Bookshelf(props) {
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{props.title}</h2>
+      <div className="bookshelf-books">
+        <ol className="books-grid">
+          {props.books.map((book) => (
+            <li key={`${book.title} + ":" + ${book.authors}`}>
+              <Book
+                book={book}
+                changeBookshelf={props.changeBookshelf}
+                selectBook={props.selectBook}
+              />
+            </li>
+          ))}
+        </ol>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Bookshelf

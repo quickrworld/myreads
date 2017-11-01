@@ -2,40 +2,39 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import SearchBooks from './SearchBooks'
 import Bookshelves from './Bookshelves'
+import BookDetails from './BookDetails'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
 class BooksApp extends React.Component {
 
   state = {
-    shelfBooks: [],
-    searchedBooks: [],
-    query: ''
+    shelfBooksStore: {},
+    searchedBooksStore: {},
+    query: '',
+    book: null
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((shelfBooks) => {
-      this.setState({ shelfBooks })
+      let shelfBooksStore = {}
+      shelfBooks.forEach((shelfBook) => {
+        shelfBooksStore[shelfBook.id] = shelfBook
+      })
+      this.setState({shelfBooksStore, shelfBooks})
     })
   }
 
   changeBookshelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((result) => {
       if (shelf === "none") {
-        const newShelfBooks = []
-        this.state.shelfBooks.forEach((element) => {
-          if (element.id !== book.id) {
-            newShelfBooks.push(element)
-          }
-        })
-        this.setState({shelfBooks: newShelfBooks})
+        let shelfBooksStore = Object.assign({}, this.state.shelfBooksStore)
+        delete shelfBooksStore[book.id]
+        this.setState({shelfBooksStore})
       } else if (result[shelf].includes(book.id)) {
-        this.setState((state) => ({
-          shelfBooks: this.state.shelfBooks.map((shelfBook) => {
-            if (shelfBook.id === book.id) { shelfBook.shelf = shelf }
-            return shelfBook
-          })
-        }))
+        let shelfBooksStore = Object.assign({}, this.state.shelfBooksStore)
+        shelfBooksStore[book.id].shelf = shelf
+        this.setState({shelfBooksStore})
       } else {
         // server update failed: provide feedback to user
       }
@@ -43,28 +42,38 @@ class BooksApp extends React.Component {
   }
 
   placeSearchedBookOnShelf = (book, shelf) => {
-    const bookOnShelf = this.state.shelfBooks.find((element,index,array) => element.id === book.id)
+    const bookOnShelf = this.state.shelfBooksStore[book.id]
     if (bookOnShelf) {
       this.changeBookshelf(book, shelf)
     } else {
-      BooksAPI.update(book, shelf).then((result) => {
-        if (result[shelf].includes(book.id)) {
-          book.shelf = shelf
-          const newShelfBooks = this.copyArray(this.state.shelfBooks)
-          newShelfBooks.push(book)
-          this.setState( { shelfBooks: newShelfBooks } )          
-        } else {
-          // server update failed: provide feedback to user
-        }
-      })
+      if (["currentlyReading", "wantToRead", "read"].includes(shelf)) {
+        BooksAPI.update(book, shelf).then((result) => {
+          if (result && result[shelf] && result[shelf].includes(book.id)) {
+            book.shelf = shelf
+            let newShelfBooks = this.state.shelfBooksStore
+            newShelfBooks[book.id] = book
+            this.setState({shelfBooksStore: newShelfBooks})
+          } else {
+            // Server update failed: provide feedback to user
+          }
+        })       
+      }
     }
   }
 
-  copyArray(a) {
-    var i = a.length
-    const b = []
-    while (i--) { b[i] = a[i] }
-    return b
+
+  shelfBooks = (shelfBooksStore) => {
+    return Object.keys(shelfBooksStore)
+      .map(id => shelfBooksStore[id])
+  }
+
+  searchedBooks = (searchedBooksStore) => {
+    return Object.keys(searchedBooksStore)
+      .map(id => searchedBooksStore[id])
+  }
+
+  selectBook = (book) => {
+    this.setState({book: book})
   }
 
   searching = false
@@ -83,26 +92,30 @@ class BooksApp extends React.Component {
     this.nextQuery = false
 
     if (query.trim().length === 0) {
-      this.setState({searchedBooks: [], query: ''})
+      this.setState({searchedBooksStore: {}, query: query})
       this.searching = false
       return
     }
 
-    BooksAPI.search(query.trim(), 100).then((searchedBooks) => {
+    BooksAPI.search(query.trim(), 20).then((searchedBooks) => {
       this.searching = false
       if (searchedBooks) {
         if (searchedBooks.error) {
-          this.setState({searchedBooks: []})
+          this.setState({searchedBooksStore: {}})
         } else {
           searchedBooks.forEach((searchedBook) => {
-            const found = this.state.shelfBooks.find((shelfBook, index, array) => shelfBook.id === searchedBook.id)
-            if (found) {
-              searchedBook.shelf = found.shelf
+            const bookOnShelf = this.state.shelfBooksStore[searchedBook.id]
+            if (bookOnShelf) {
+              searchedBook.shelf = bookOnShelf.shelf
             } else {
-              searchedBook.shelf = "none"
+              searchedBook.shelf = "none" // Check
             }
           })
-          this.setState({searchedBooks})
+          let searchedBooksStore = {}
+          searchedBooks.forEach((searchedBook) => {
+            searchedBooksStore[searchedBook.id] = searchedBook
+            this.setState({searchedBooksStore})
+          })
         }
         if (this.nextQuery) {
           this.updateQuery(this.state.query)
@@ -118,20 +131,26 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path="/" render={() => (
           <Bookshelves
-            shelfBooks={this.state.shelfBooks}
-            searchedBooks={this.state.searchedBooks}
+            shelfBooks={this.shelfBooks(this.state.shelfBooksStore)}
+            searchedBooks={this.searchedBooks(this.state.searchedBooksStore)}
             changeBookshelf={this.changeBookshelf}
+            selectBook={this.selectBook}
           />
         )}/>
         <Route exact path="/search" render={() => (
           <SearchBooks
-            shelfBooks={this.state.shelfBooks}
-            searchedBooks={this.state.searchedBooks}
+            searchedBooks={this.searchedBooks(this.state.searchedBooksStore)}
             query={this.state.query}
             updateQuery={this.updateQuery}
             changeBookshelf={this.placeSearchedBookOnShelf}
+            selectBook={this.selectBook}
           />
-        )}/>        
+        )}/>
+        <Route exact path="/bookdetails" render={() => (
+          <BookDetails
+            book={this.state.book}
+          />
+        )}/>
       </div>
     )
   }

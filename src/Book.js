@@ -1,43 +1,44 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-class Book extends React.Component {
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  changeBookshelf: PropTypes.func.isRequired,
+  selectBook: PropTypes.func.isRequired
+}
 
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-    changeBookshelf: PropTypes.func.isRequired
+function Book(props) {
+  let backgroundImage
+  if (props.book.imageLinks) {
+    backgroundImage = `url(${props.book.imageLinks.thumbnail})`
+  } else {
+    backgroundImage = ''
   }
+  return (
+    <div className="book">
+      <div className="book-top">
+        <Link
+          onClick={(event) => props.selectBook(props.book)}
+          to='/bookdetails'
+          className="book-cover"
+          style={{ width: 128, height: 193, backgroundImage: backgroundImage }}></Link>
 
-  render() {
-    let backgroundImage
-    if (this.props.book.imageLinks) {
-      backgroundImage = `url(${this.props.book.imageLinks.thumbnail})`
-    } else {
-      backgroundImage = ''
-    }
-    return (
-      <div className="book">
-        <div className="book-top">
-          <div
-            className="book-cover"
-            style={{ width: 128, height: 193, backgroundImage: backgroundImage }}>
-          </div>
-          <div className="book-shelf-changer">
-            <select value={this.props.book.shelf}
-              onChange={(event) => this.props.changeBookshelf(this.props.book, event.target.value)}>
-              <option value="none" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
-            </select>
-          </div>
+        <div className="book-shelf-changer">
+          <select value={props.book.shelf}
+            onChange={(event) => props.changeBookshelf(props.book, event.target.value)}>
+            <option value="none" disabled>Move to...</option>
+            <option value="currentlyReading">Currently Reading</option>
+            <option value="wantToRead">Want to Read</option>
+            <option value="read">Read</option>
+            <option value="none">None</option>
+          </select>
         </div>
-        <div className="book-title">{this.props.book.title}</div>
-        <div className="book-authors">{this.props.book.authors && this.props.book.authors.join(', ')}</div>
       </div>
-    )
-  }
+      <div className="book-title">{props.book.title}</div>
+      <div className="book-authors">{props.book.authors && props.book.authors.join(', ')}</div>
+    </div> 
+  ) 
 }
 
 export default Book

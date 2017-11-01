@@ -7,11 +7,12 @@ import './App.css'
 class SearchBooks extends React.Component {
 
   static propTypes = {
-    shelfBooks: PropTypes.array.isRequired,
+//
     searchedBooks: PropTypes.array.isRequired,
     query: PropTypes.string.isRequired,
     updateQuery: PropTypes.func.isRequired,
-    changeBookshelf: PropTypes.func.isRequired
+    changeBookshelf: PropTypes.func.isRequired,
+    selectBook: PropTypes.func.isRequired
   }
 
   componentDidMount() {
@@ -42,11 +43,14 @@ class SearchBooks extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {(this.props.searchedBooks && this.props.searchedBooks.length > 0) && this.props.searchedBooks.map((book) => (
+            {(this.props.searchedBooks && 
+                this.props.searchedBooks.length > 0) && 
+                this.props.searchedBooks.map((book) => (
               <li key={book.id}>
                 <Book
                   book={book}
                   changeBookshelf={this.props.changeBookshelf}
+                  selectBook={this.props.selectBook}
                 />
               </li>
             ))}
