@@ -22,8 +22,7 @@ function Book(props) {
           onClick={(event) => props.selectBook(props.book)}
           to='/bookdetails'
           className="book-cover"
-          style={{ width: 128, height: 193, backgroundImage: backgroundImage }}></Link>
-
+          style={{ width: 128, height: 193, backgroundImage: backgroundImage }} />
         <div className="book-shelf-changer">
           <select value={props.book.shelf}
             onChange={(event) => props.changeBookshelf(props.book, event.target.value)}>
@@ -37,8 +36,8 @@ function Book(props) {
       </div>
       <div className="book-title">{props.book.title}</div>
       <div className="book-authors">{props.book.authors && props.book.authors.join(', ')}</div>
-    </div> 
-  ) 
+    </div>
+  )
 }
 
 export default Book

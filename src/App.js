@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
+// import PropTypes from 'prop-types'
 import SearchBooks from './SearchBooks'
 import Bookshelves from './Bookshelves'
 import BookDetails from './BookDetails'
@@ -60,7 +61,6 @@ class BooksApp extends React.Component {
       }
     }
   }
-
 
   shelfBooks = (shelfBooksStore) => {
     return Object.keys(shelfBooksStore)
@@ -129,26 +129,29 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route exact path="/" render={() => (
+        <Route exact path="/" render={(props) => (
           <Bookshelves
             shelfBooks={this.shelfBooks(this.state.shelfBooksStore)}
             searchedBooks={this.searchedBooks(this.state.searchedBooksStore)}
             changeBookshelf={this.changeBookshelf}
             selectBook={this.selectBook}
+            history={props.history}
           />
         )}/>
-        <Route exact path="/search" render={() => (
+        <Route exact path="/search" render={(props) => (
           <SearchBooks
             searchedBooks={this.searchedBooks(this.state.searchedBooksStore)}
             query={this.state.query}
             updateQuery={this.updateQuery}
             changeBookshelf={this.placeSearchedBookOnShelf}
             selectBook={this.selectBook}
+            history={props.history}
           />
         )}/>
-        <Route exact path="/bookdetails" render={() => (
+        <Route exact path="/bookdetails" render={(props) => (
           <BookDetails
             book={this.state.book}
+            history={props.history}
           />
         )}/>
       </div>

@@ -8,7 +8,9 @@ Bookshelf.propTypes = {
   title: PropTypes.string.isRequired,
   books: PropTypes.array.isRequired,
   changeBookshelf: PropTypes.func.isRequired,
-  selectBook: PropTypes.func.isRequired
+  selectBook: PropTypes.func.isRequired,
+  currentLocation: PropTypes.object,
+  history: PropTypes.object.isRequired
 }
 
 function Bookshelf(props) {

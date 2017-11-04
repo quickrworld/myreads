@@ -8,7 +8,8 @@ Bookshelves.propTypes = {
   shelfBooks: PropTypes.array.isRequired,
   searchedBooks: PropTypes.array.isRequired,
   changeBookshelf: PropTypes.func.isRequired,
-  selectBook: PropTypes.func.isRequired
+  selectBook: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 }
 
 function Bookshelves(props) {
@@ -27,18 +28,21 @@ function Bookshelves(props) {
             books={booksForNamedShelf(props.shelfBooks, "currentlyReading")}
             changeBookshelf={props.changeBookshelf}
             selectBook={props.selectBook}
+            history={props.history}
           />
           <Bookshelf
             title='Want to Read'
             books={booksForNamedShelf(props.shelfBooks, "wantToRead")}
             changeBookshelf={props.changeBookshelf}
             selectBook={props.selectBook}
+            history={props.history}
           />
           <Bookshelf
             title='Read'
             books={booksForNamedShelf(props.shelfBooks, "read")}
             changeBookshelf={props.changeBookshelf}
             selectBook={props.selectBook}
+            history={props.history}
           />
         </div>
       </div>
