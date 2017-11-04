@@ -24,13 +24,23 @@ function BookDetails(props) {
         <div style={{display:"flex"}}>
           <div className="book-top" style={{margin:"24px"}}>
             <img
-                alt={props.book.title}
+                alt=''
                 className="book-cover"
                 style={{ width: 128, height: 193, backgroundImage: backgroundImage }} />
           </div>
           <div style={{ margin:"24px 0 0 0" }}>
-            <div className="book-title">{props.book.title}</div>
-            <div className="book-authors">{props.book.authors}</div>
+            {props.book.title &&
+              (<div className="book-title">{props.book.title}</div>)}
+            {props.book.subtitle &&
+              (<div className="book-subtitle">{props.book.subtitle}</div>)}
+            {props.book.authors &&
+              (<div className="book-authors">Authors: {props.book.authors.join(', ')}</div>)}
+            {props.book.pageCount &&
+              (<div className="book-pagecount">Pages: {props.book.pageCount}</div>)}
+            {props.book.publisher &&
+              (<div className="book-publisher">Publisher: {props.book.publisher}</div>)}
+            {props.book.averageRating &&
+              (<div className="book-rating">Rating: {props.book.averageRating} from {props.book.ratingsCount}</div>)}
           </div>
         </div>
       </div>

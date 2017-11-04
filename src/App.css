@@ -123,13 +123,19 @@ body, .app {
   width: 140px;
 }
 .book-title,
-.book-authors {
+.book-subtitle,
+.book-authors,
+.book-pagecount,
+.book-publisher,
+.book-rating {
   font-size: 0.8em;
+  margin: 0 24px 0 0;
 }
 .book-title {
   margin-top: 10px;
 }
-.book-authors {
+.book-authors,
+.book-subtitle {
   color: #999;
 }
 
