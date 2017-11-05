@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 import SearchBooks from './SearchBooks'
 import Bookshelves from './Bookshelves'
 import BookDetails from './BookDetails'
+import Log from './Log'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -13,7 +14,8 @@ class BooksApp extends React.Component {
     shelfBooksStore: {},
     searchedBooksStore: {},
     query: '',
-    book: null
+    book: null,
+    message: ''
   }
 
   componentDidMount() {
@@ -23,7 +25,17 @@ class BooksApp extends React.Component {
         shelfBooksStore[shelfBook.id] = shelfBook
       })
       this.setState({shelfBooksStore, shelfBooks})
+    }).catch((error) => {
+      this.logMessage(`(${error.message}): Failed to get books for the shelves from the server. Check connectivity to the server.`)
     })
+  }
+
+  logMessage = (message) => {
+    this.setState({message: message})
+  }
+
+  resetMessage = () => {
+    this.setState({message: ''})
   }
 
   changeBookshelf = (book, shelf) => {
@@ -37,8 +49,10 @@ class BooksApp extends React.Component {
         shelfBooksStore[book.id].shelf = shelf
         this.setState({shelfBooksStore})
       } else {
-        // server update failed: provide feedback to user
+        this.logMessage("Server update failed")
       }
+    }).catch((error) => {
+      this.logMessage(`(${error.message}): Failed to move book titled '${book.title}' from shelf '${book.shelf}' to shelf '${shelf}'. Check connectivity to the server.`)
     })
   }
 
@@ -55,9 +69,11 @@ class BooksApp extends React.Component {
             newShelfBooks[book.id] = book
             this.setState({shelfBooksStore: newShelfBooks})
           } else {
-            // Server update failed: provide feedback to user
+            this.logMessage("Server update failed")
           }
-        })       
+        }).catch((error) => {
+          this.logMessage(`(${error.message}): Failed to move book titled '${book.title}' from shelf '${book.shelf}' to shelf '${shelf}'. Check connectivity to the server.`)
+        })
       }
     }
   }
@@ -123,6 +139,7 @@ class BooksApp extends React.Component {
       }
     }).catch((error) => {
       this.searching = false
+      this.logMessage(`(${error.message}): Failed to get results for search term '${query}'. Check connectivity to the server.`)
     })
   }
 
@@ -153,6 +170,12 @@ class BooksApp extends React.Component {
             book={this.state.book}
             changeBookshelf={this.changeBookshelf}
             history={props.history}
+          />
+        )}/>
+        <Route path="" render={(props) => (
+          <Log
+            message={this.state.message}
+            resetMessage={this.resetMessage}
           />
         )}/>
       </div>
