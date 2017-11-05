@@ -18,6 +18,7 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
+    console.log("App component did mount")
     BooksAPI.getAll().then((shelfBooks) => {
       let shelfBooksStore = {}
       shelfBooks.forEach((shelfBook) => {

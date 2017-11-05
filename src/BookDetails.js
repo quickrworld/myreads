@@ -1,20 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import ScrollToTopOnMount from './ScrollToTopOnMount'
 import PropTypes from 'prop-types'
 
 BookDetails.propTypes = {
   changeBookshelf: PropTypes.func.isRequired,
   currentLocation: PropTypes.object,
   history: PropTypes.object.isRequired
-}
-
-class ScrollToTopOnMount extends React.Component {
-    componentDidMount(props) {
-        window.scrollTo(0, 0)
-    }
-    render() {
-        return null
-    }
 }
 
 function BookDetails(props) {
