@@ -178,3 +178,12 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* shadow filter */
+
+.shadowfilter {
+  filter: drop-shadow(0px 0px 0px rgba(255,255,255,0.80));
+  transition: all 0.5s linear;
+}.shadowfilter:hover {
+   filter: drop-shadow(0px 0px 8px rgba(0, 128, 255, 0.8));
+}
