@@ -72,7 +72,8 @@ class BooksApp extends React.Component {
             this.logMessage("Server update failed")
           }
         }).catch((error) => {
-          `(${error.message}): Action move book '${book.title}' from '${book.shelf}' to '${shelf}' may have failed.`)
+          this.logMessage(
+            `(${error.message}): Action move book '${book.title}' from '${book.shelf}' to '${shelf}' may have failed.`)
         })
       }
     }
