@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-// import PropTypes from 'prop-types'
 import SearchBooks from './SearchBooks'
 import Bookshelves from './Bookshelves'
 import BookDetails from './BookDetails'
@@ -26,7 +25,7 @@ class BooksApp extends React.Component {
       })
       this.setState({shelfBooksStore, shelfBooks})
     }).catch((error) => {
-      this.logMessage(`(${error.message}): Failed to get books for the shelves from the server. Check connectivity to the server.`)
+      this.logMessage(`(${error.message}): Failed to get books for the shelves from the server.`)
     })
   }
 
@@ -52,7 +51,7 @@ class BooksApp extends React.Component {
         this.logMessage("Server update failed")
       }
     }).catch((error) => {
-      this.logMessage(`(${error.message}): Failed to move book titled '${book.title}' from shelf '${book.shelf}' to shelf '${shelf}'. Check connectivity to the server.`)
+      this.logMessage(`(${error.message}): Failed to move book '${book.title}' from '${book.shelf}' to '${shelf}'.`)
     })
   }
 
@@ -72,7 +71,7 @@ class BooksApp extends React.Component {
             this.logMessage("Server update failed")
           }
         }).catch((error) => {
-          this.logMessage(`(${error.message}): Failed to move book titled '${book.title}' from shelf '${book.shelf}' to shelf '${shelf}'. Check connectivity to the server.`)
+          this.logMessage(`(${error.message}): Failed to move book '${book.title}' from '${book.shelf}' to '${shelf}'.`)
         })
       }
     }
@@ -139,7 +138,7 @@ class BooksApp extends React.Component {
       }
     }).catch((error) => {
       this.searching = false
-      this.logMessage(`(${error.message}): Failed to get results for search term '${query}'. Check connectivity to the server.`)
+      this.logMessage(`(${error.message}): Failed to get results for search term '${query}'.`)
     })
   }
 
