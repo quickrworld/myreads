@@ -51,7 +51,8 @@ class BooksApp extends React.Component {
         this.logMessage("Server update failed")
       }
     }).catch((error) => {
-      this.logMessage(`(${error.message}): Failed to move book '${book.title}' from '${book.shelf}' to '${shelf}'.`)
+      this.logMessage(
+        `(${error.message}): Action move book '${book.title}' from '${book.shelf}' to '${shelf}' may have failed.`)
     })
   }
 
@@ -71,7 +72,7 @@ class BooksApp extends React.Component {
             this.logMessage("Server update failed")
           }
         }).catch((error) => {
-          this.logMessage(`(${error.message}): Failed to move book '${book.title}' from '${book.shelf}' to '${shelf}'.`)
+          `(${error.message}): Action move book '${book.title}' from '${book.shelf}' to '${shelf}' may have failed.`)
         })
       }
     }

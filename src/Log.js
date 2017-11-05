@@ -25,7 +25,9 @@ function Log(props) {
         <div style={{padding:"12px", color:"white"}}>{message}</div>
       )}
       {message &&
-      (<div><button style={{backgroundColor: "white", margin: "10px", color: "gray", fontSize: "14px"}} onClick={props.resetMessage}>OK</button></div>)}
+      (<div><button
+        style={{backgroundColor: "white", margin: "10px", color: "gray", fontSize: "14px"}}
+        onClick={props.resetMessage}>OK</button></div>)}
     </div>
   )
 }
