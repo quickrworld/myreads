@@ -151,6 +151,7 @@ class BooksApp extends React.Component {
         <Route exact path="/bookdetails" render={(props) => (
           <BookDetails
             book={this.state.book}
+            changeBookshelf={this.changeBookshelf}
             history={props.history}
           />
         )}/>

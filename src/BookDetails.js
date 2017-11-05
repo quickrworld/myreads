@@ -3,8 +3,18 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 BookDetails.propTypes = {
+  changeBookshelf: PropTypes.func.isRequired,
   currentLocation: PropTypes.object,
   history: PropTypes.object.isRequired
+}
+
+class ScrollToTopOnMount extends React.Component {
+    componentDidMount(props) {
+        window.scrollTo(0, 0)
+    }
+    render() {
+        return null
+    }
 }
 
 function BookDetails(props) {
@@ -16,19 +26,28 @@ function BookDetails(props) {
   }
   return (
     <div>
+      <ScrollToTopOnMount/>
       <div style={{display:"flex"}}>
         <Link className="close-search" to='' onClick={props.history.goBack}>Close</Link>
         <div style={{ margin:"16px 24px 0 0", textAlign: "center", width: "100%" }}>{props.book.title}</div>
       </div>
       <div>
         <div style={{display:"flex"}}>
-          <div className="book-top" style={{margin:"24px"}}>
-            <img
-                alt=''
-                className="book-cover"
-                style={{ width: 128, height: 193, backgroundImage: backgroundImage }} />
+          <div className="book-top" style={{margin:"0 24px 24px 24px"}}>
+            <img className="book-cover" alt=''
+                 style={{ width: 128, height: 193, backgroundImage: backgroundImage }} />
+            <div className="book-shelf-changer" style={{right: -10}}>
+              <select value={props.book.shelf}
+                      onChange={(event) => props.changeBookshelf(props.book, event.target.value)}>
+                <option value="none" disabled>Move to...</option>
+                <option value="currentlyReading">Currently Reading</option>
+                <option value="wantToRead">Want to Read</option>
+                <option value="read">Read</option>
+                <option value="none">None</option>
+              </select>
+            </div>
           </div>
-          <div style={{ margin:"24px 0 0 0" }}>
+          <div>
             {props.book.title &&
               (<div className="book-title">{props.book.title}</div>)}
             {props.book.subtitle &&
