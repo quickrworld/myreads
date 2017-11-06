@@ -7,7 +7,7 @@ Log.propTypes = {
 }
 
 function Log(props) {
-  let message = props.message
+  const message = props.message
 
   return (
     <div style={{

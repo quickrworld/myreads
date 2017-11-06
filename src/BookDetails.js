@@ -11,9 +11,9 @@ BookDetails.propTypes = {
 
 function BookDetails(props) {
 
-  let book = props.history.location.state.book
+  const book = props.history.location.state.book
 
-  let backgroundImage = book.imageLinks ? `url(${book.imageLinks.thumbnail})` : ''
+  const backgroundImage = book.imageLinks ? `url(${book.imageLinks.thumbnail})` : ''
 
   return (
     <div>

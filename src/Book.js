@@ -9,12 +9,9 @@ Book.propTypes = {
 }
 
 function Book(props) {
-  let backgroundImage
-  if (props.book.imageLinks) {
-    backgroundImage = `url(${props.book.imageLinks.thumbnail})`
-  } else {
-    backgroundImage = ''
-  }
+
+  const backgroundImage = props.book.imageLinks ? `url(${props.book.imageLinks.thumbnail})` : ''
+
   return (
     <div className="book">
       <div className="book-top">
