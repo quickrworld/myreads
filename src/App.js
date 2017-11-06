@@ -18,7 +18,6 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    console.log("App component did mount")
     BooksAPI.getAll().then((shelfBooks) => {
       let shelfBooksStore = {}
       shelfBooks.forEach((shelfBook) => {
@@ -94,12 +93,18 @@ class BooksApp extends React.Component {
     this.setState({book: book})
   }
 
+  storeQuery = (query) => {
+    sessionStorage.setItem("query", query)
+  }
+
   searching = false
   nextQuery = false
 
   updateQuery = (query) => {
 
     this.setState({query})
+
+    this.storeQuery(query)
 
     if (this.searching) {
       this.nextQuery = true
@@ -145,7 +150,7 @@ class BooksApp extends React.Component {
     })
   }
 
-  render() {
+  render(props) {
     return (
       <div className="app">
         <Route exact path="/" render={(props) => (
@@ -165,6 +170,7 @@ class BooksApp extends React.Component {
             changeBookshelf={this.placeSearchedBookOnShelf}
             selectBook={this.selectBook}
             history={props.history}
+            getQuery={this.getQuery}
           />
         )}/>
         <Route exact path="/bookdetails" render={(props) => (

@@ -20,7 +20,10 @@ function Book(props) {
       <div className="book-top">
         <Link
           onClick={(event) => props.selectBook(props.book)}
-          to='/bookdetails'
+          to={{
+            pathname: '/bookdetails',
+            state: { book: props.book }
+          }}
           className="book-cover shadowfilter"
           style={{ width: 128, height: 193, backgroundImage: backgroundImage }} />
         <div className="book-shelf-changer">
