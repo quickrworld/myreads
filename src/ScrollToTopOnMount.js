@@ -10,3 +10,5 @@ class ScrollToTopOnMount extends React.Component {
 }
 
 export default ScrollToTopOnMount
+
+// ReactTraining / react-router
