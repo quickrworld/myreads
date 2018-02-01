@@ -1,7 +1,6 @@
 # MyReads Project
 
-The 'MyReads' project uses the Udacity provided starter template.
-The application allows the user to view books categorized under
+The 'MyReads' application allows the user to view books categorized under
 three bookshelves -- Currently Reading, Want to Read, and Read.
 The user can move a book from one shelf to another by selecting
 the target bookshelf using a drop down. A book can be removed from
