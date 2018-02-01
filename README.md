@@ -1,6 +1,25 @@
 # MyReads Project
 
-The 'MyReads' application allows the user to view books categorized under
+The 'MyReads' application code can be cloned from its github repository
+and deployed and executed on a test server using simple steps:
+
+1. `cd` to a directory where you want to create the project directory
+2. Use
+`git clone https://github.com/quickrworld/myreads.git`
+to clone the repository
+3. Use `cd myreads` to change your working directory to the
+project root directory
+4. Install all project dependencies with `npm install`
+5. Start the development server with `npm start`
+
+The main page can be viewed by navigating the browser to
+`http://localhost:3000`
+
+If you change any of the defaults the above commands may have to be
+modified accordingly. See the documentation of the commands for further
+information.
+
+The application allows the user to view books categorized under
 three bookshelves -- Currently Reading, Want to Read, and Read.
 The user can move a book from one shelf to another by selecting
 the target bookshelf using a drop down. A book can be removed from
@@ -22,25 +41,6 @@ results in the book being categorized accordingly in all other pages.
 Data is persisted and all application pages use the same information
 about each common object.
 
-The application code can be cloned from its github repository
-and deployed and executed on a test server using simple steps:
-
-1. `cd` to a directory where you want to create the project directory
-2. Use
-`git clone https://github.com/quickrworld/myreads.git`
-to clone the repository
-3. Use `cd myreads` to change your working directory to the
-project root directory
-4. Install all project dependencies with `npm install`
-5. Start the development server with `npm start`
-
-The main page can be viewed by navigating the browser to
-`http://localhost:3000`
-
-If you change any of the defaults the above commands may have to be
-modified accordingly. See the documentation of the commands for further
-information.
-
 The project uses the following components:
 
 * App - The entry point that hosts the application
@@ -54,12 +54,3 @@ and allows categroization
 and displays matching books
 * Log - Displays error messages to the user in case any action fails
 * ScrollToTopOnMount - Scrolls to the display to the top of the window
-
-
-
-
-
-
-
-
-
