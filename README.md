@@ -34,7 +34,6 @@ results page.
 Clicking on any book image on the main page or the search results page
 displays additional details about the book in a new book details page.
 
-
 Navigation is intuitive and refreshing the browser re-displays the
 information. Categorizing a book on the main page or the search page
 results in the book being categorized accordingly in all other pages.
@@ -54,3 +53,7 @@ and allows categroization
 and displays matching books
 * Log - Displays error messages to the user in case any action fails
 * ScrollToTopOnMount - Scrolls to the display to the top of the window
+
+Note: The installation steps have been tested on a MacBook running macOS.
+
+Note: The installation steps have been tested on a MacBook running macOS.
