@@ -55,5 +55,3 @@ and displays matching books
 * ScrollToTopOnMount - Scrolls to the display to the top of the window
 
 Note: The installation steps have been tested on a MacBook running macOS.
-
-Note: The installation steps have been tested on a MacBook running macOS.
